@@ -1,15 +1,39 @@
+import 'primo-explore-help-menu';
+import {ls_help_menu_updates, ls_help_menu_items} from './help-menu-content';
+
 (function(){
 "use strict";
 'use strict';
 
-var app = angular.module('viewCustom', ['angularLoad', 'externalSearch', 'hathiTrustAvailability', 'myILL']);
-
-"use strict";
-'use strict';
+var app = angular.module('viewCustom',
+  [
+    'angularLoad',
+    'externalSearch',
+    'hathiTrustAvailability',
+    'myILL',
+    'helpMenuContentDisplay',
+    'helpMenuTopbar'
+  ]);
 
 /************************************* BEGIN Customization Variables ************************************/
 
 //Here you can enter options to be passed to customization packages to configure them.
+
+// helpmenu
+app.constant('helpMenuConfig', {
+  "helpMenuWidth":550,
+  "logToConsole":false,
+  "publishEvents":true,
+
+  "enableNotificationIndicator":true,
+  "notificationIndicatorExpiration": 1000*60*60*24*7, // 1 week
+
+  "helpMenuTitle":"Search Menu",
+  "updatesLabel":"Recently Added Features",
+  "list_of_updates":ls_help_menu_updates,
+  "entriesLabel":"Search Help",
+  "list_of_elements":ls_help_menu_items
+});
 
 //My ILL
 

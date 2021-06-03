@@ -52,6 +52,7 @@
     "merge-stream": "1.0.1",
     "minimatch": "3.0.4",
     "minimist": "1.2.5",
+    "primo-explore-help-menu": "^1.6.3",
     "prompt": "1.0.0",
     "protractor": "5.4.2",
     "protractor-image-comparison": "3.1.0",
@@ -71,5 +72,6 @@
     "last 2 version",
     "> 2%"
   ],
-  "repository": "https://github.com/ExLibrisGroup/primo-explore-devenv"
+  "repository": "https://github.com/ExLibrisGroup/primo-explore-devenv",
+  "postinstall": "cp node_modules/primo-explore-help-menu/dist/help-menu.css ./css/help-menu.css"
 }
