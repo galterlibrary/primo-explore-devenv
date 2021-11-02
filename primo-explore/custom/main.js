@@ -515,8 +515,20 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
   {
     vm.parentElement = this.$element.parent()[0]; //the prm-full-view container
     try {
-        vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+      var addata = vm.parentCtrl.item.pnx.addata || '';
+      var doi = addata.doi
+      // pmid is pubmed id
+      var pmid = addata.pmid
+
+      // if undefined, can't call [] without error
+      if(typeof doi != 'undefined') {
+        vm.doi = doi[0] || '';
+      }
+      if (typeof pmid != 'undefined') {
+        vm.pmid = pmid[0] || '';
+      }
     } catch (e) {
+      console.log('found error looking for pnx ids');
       return;
     }
 
@@ -536,14 +548,40 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
             };
             vm.parentCtrl.services.splice(vm.parentCtrl.services.length, 0, altmetricsSection);
           } catch (e) {
+            console.log('doi lookup: caught error in http get request');
             console.log(e);
           }
         }).catch(function (e) {
+          console.log('doi lookup: caught error in timeout');
           return;
         });
       }, 3000);
     }
 
+    // pubmed lookup. copies above code, but replaces doi with pmid
+    if (vm.pmid) {
+      $timeout(function () {
+        $http.get(altmetric_endpoint + '/pmid/' + vm.pmid).then(function () {
+          try {
+            //Get the altmetrics widget
+            angularLoad.loadScript(altmetric_widget + Date.now()).then(function () {});
+            //Create our new Primo service
+            var altmetricsSection = {
+              scrollId: "altmetrics",
+              serviceName: "altmetrics",
+              title: "brief.results.tabs.Altmetrics"
+            };
+            vm.parentCtrl.services.splice(vm.parentCtrl.services.length, 0, altmetricsSection);
+          } catch (e) {
+            console.log('pmid lookup: caught error in http get request');
+            console.log(e);
+          }
+        }).catch(function (e) {
+          console.log('pmid lookup: caught error in timeout');
+          return;
+        });
+      }, 3000);
+    }
 
     //move the altmetrics widget into the new Altmetrics service section
     var unbindWatcher = this.$scope.$watch(function () {
@@ -552,9 +590,12 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
       if (newVal) {
         //Get the section body associated with the value we're watching
         let altContainer = newVal.parentElement.parentElement.parentElement.parentElement.children[1];
-        let almt1 = vm.parentElement.children[1].children[0];
-        if (altContainer && altContainer.appendChild && altm1) {
+        let altm1 = vm.parentElement.children[1].children[0];
+        let altm2 = vm.parentElement.children[1].children[1];
+
+        if (altContainer && altContainer.appendChild && (altm1 || altm2)) {
             altContainer.appendChild(altm1);
+            altContainer.appendChild(altm2);
         }
         unbindWatcher();
       }
@@ -583,6 +624,7 @@ app.component('prmFullViewAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'FullViewAfterController',
   template: '<div id="altm1" ng-if="$ctrl.doi" class="altmetric-embed" data-hide-no-mentions="true" data-link-target="new" data-badge-type="medium-donut" data-badge-details="right" data-doi="{{$ctrl.doi}}"></div>\
+             <div id="altm2" ng-if="$ctrl.pmid" class="altmetric-embed" data-hide-no-mentions="true" data-link-target="new" data-badge-type="medium-donut" data-badge-details="right" data-pmid="{{$ctrl.pmid}}"></div>\
              <primo-explore-lod-author-card parent-ctrl="$ctrl.parentCtrl"></primo-explore-lod-author-card>'
 });
 
@@ -791,7 +833,7 @@ app.controller('TopbarAfterController', [function () {
 app.component('prmTopbarAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'TopbarAfterController',
-  template: '\n <div id="TopbarAfterSiteTitle"><a href="https://galter.northwestern.edu">Galter Health Sciences Library & Learning Center</a></div>\n    <prm-topbar-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-topbar-after-app-store-generated>\n'
+  template: '\n <div id="TopbarAfterSiteTitle"><a href="https://galter.northwestern.edu">Galter Health Sciences Library & Learning Center</a></div>\n<prm-topbar-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-topbar-after-app-store-generated>\n'
 
 });
 
