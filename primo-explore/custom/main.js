@@ -556,10 +556,8 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
           return;
         });
       }, 3000);
-    }
-
-    // pubmed lookup. copies above code, but replaces doi with pmid
-    if (vm.pmid) {
+    } // pubmed lookup. copies above code, but replaces doi with pmid
+    else if (vm.pmid) {
       $timeout(function () {
         $http.get(altmetric_endpoint + '/pmid/' + vm.pmid).then(function () {
           try {
