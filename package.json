@@ -13,7 +13,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babelify": "8.0.0",
     "bluebird": "3.5.4",
-    "browser-sync": "^2.26.5",
+    "browser-sync": "^2.27.10",
     "browserify": "16.2.3",
     "camel-case": "^3.0.0",
     "colors": "^1.3.3",
@@ -37,7 +37,7 @@
     "gulp-flatten": "^0.4.0",
     "gulp-plumber": "1.2.0",
     "gulp-rename": "1.4.0",
-    "gulp-sass": "4.0.2",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "2.6.5",
     "gulp-streamify": "1.0.2",
     "gulp-template": "5.0.0",
@@ -48,10 +48,10 @@
     "gulp4-run-sequence": "^1.0.1",
     "http-response-object": "3.0.2",
     "listdirs": "3.1.1",
-    "lodash": "4.17.19",
+    "lodash": "^4.17.21",
     "merge-stream": "1.0.1",
     "minimatch": "3.0.4",
-    "minimist": "1.2.5",
+    "minimist": "^1.2.6",
     "primo-explore-lod-author-card": "^0.0.6",
     "prompt": "1.0.0",
     "protractor": "5.4.2",
@@ -59,7 +59,8 @@
     "request": "^2.88.0",
     "require-dir": "1.2.0",
     "run-sequence": "^2.2.1",
-    "shelljs": "0.8.3",
+    "sass": "^1.53.0",
+    "shelljs": "^0.8.5",
     "stream-to-promise": "^2.2.0",
     "tar-fs": "2.0.0",
     "vinyl-buffer": "1.0.1",
@@ -72,5 +73,6 @@
     "last 2 version",
     "> 2%"
   ],
-  "repository": "https://github.com/ExLibrisGroup/primo-explore-devenv"
+  "repository": "https://github.com/ExLibrisGroup/primo-explore-devenv",
+  "dependencies": {}
 }
