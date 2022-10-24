@@ -30,24 +30,29 @@ app.constant('illiadOptions', {
 
 app.component('prmTopbarAfterAppStoreGenerated', {
   template: /*html*/'\n    <primo-explore-top-alert>      <md-toolbar>        <div class="bar alert-bar" layout="row" layout-align="left center">          <span class="bar-text"><prm-icon error-attention="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="error-attention"></prm-icon>           Coronavirus information for              <a href="https://www.feinberg.northwestern.edu/sites/covid-19/" target="_blank" class="primo-explore-top-alert-link"><strong>Feinberg. </strong></a>\n            </span>\n        </div>\n      </md-toolbar>\n    </primo-explore-top-alert>',
-  controller: ['$element', function ($element) {
-    var ctrl = this;
-    ctrl.$postLink = function () {
-      var $primoExploreMain = $element.parent().parent().parent();
-      var $el = $element.query('primo-explore-top-alert').detach();
-      $primoExploreMain.prepend($el);
+  controller: ['$element', function($element) {
+    this.$onInit = function(){
+      this.$postLink = function () {
+        var $primoExploreMain = $element.parent().parent().parent();
+        var $el = $element.query('primo-explore-top-alert').detach();
+        $primoExploreMain.prepend($el);
+      };
     };
+
   }]
 });
 
 // Enhance No Results tile
 
 app.controller('prmNoSearchResultAfterAppStoreGeneratedControllerAppStoreGenerated', [function () {
-  var vm = this;
-  vm.getSearchTerm = getSearchTerm;
-  function getSearchTerm() {
-    return vm.parentCtrl.term;
-  }
+  this.$onInit = function(){
+   this.getSearchTerm = getSearchTerm;
+    function getSearchTerm() {
+      this.$onInit = function () {
+        return this.parentCtrl.term;
+      }
+    }
+  };
 }]);
 
 app.component('prmNoSearchResultAfterAppStoreGenerated', {
@@ -61,10 +66,10 @@ app.component('prmNoSearchResultAfterAppStoreGenerated', {
 //Logo with link
 
 app.controller('prmLogoAfterAppStoreGeneratedControllerAppStoreGenerated', [function () {
-  var ctrl = this;
-
-  ctrl.getIconLink = function () {
-    return ctrl.parentCtrl.iconLink;
+  this.$onInit = function(){
+    this.getIconLink = function () {
+      return this.parentCtrl.iconLink;
+    };
   };
 }]);
 
@@ -248,8 +253,9 @@ app.component('prmSearchBarAfterAppStoreGenerated', {
 });
 
 app.controller('SearchBarAfterControllerAppStoreGenerated', ['angularLoad', function (angularLoad) {
-  var vm = this;
-  vm.parentCtrl.showTabsAndScopes = true;
+  this.$onInit = function () {
+    this.parentCtrl.showTabsAndScopes = true;
+  }
 }]);
 
 //End display scopes
@@ -506,37 +512,37 @@ angular.module('myILL', []).component('prmLoansOverviewAfterAppStoreGenerated', 
 app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$element', '$timeout', '$window', function (angularLoad, $http, $scope, $element, $timeout, $window) {
   var altmetric_endpoint = 'https://api.altmetric.com/v1';
   var altmetric_widget = 'https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js?';
-  var vm = this;
-  this.$http = $http;
-  this.$element = $element;
-  this.$scope = $scope;
-  this.$window = $window;
-  vm.$onInit = function () //wait for all the bindings to be initialised
-  {
-    vm.parentElement = this.$element.parent()[0]; //the prm-full-view container
+  this.$onInit = function (){ //wait for all the bindings to be initialised
+    this.$http = $http;
+    this.$element = $element;
+    this.$scope = $scope;
+    this.$window = $window;
+    this.parentElement = this.$element.parent()[0]; //the prm-full-view container
     try {
-      var addata = vm.parentCtrl.item.pnx.addata || '';
+      this.$onInit = function () {
+        var addata = this.parentCtrl.item.pnx.addata || '';
+      }
       var doi = addata.doi
       // pmid is pubmed id
       var pmid = addata.pmid
 
       // if undefined, can't call [] without error
       if(typeof doi != 'undefined') {
-        vm.doi = doi[0] || '';
+        this.doi = doi[0] || '';
       }
       if (typeof pmid != 'undefined') {
-        vm.pmid = pmid[0] || '';
+        this.pmid = pmid[0] || '';
       }
     } catch (e) {
       console.log('found error looking for pnx ids');
       return;
     }
 
-    if (vm.doi) {
+    if (this.doi) {
       //If we've got a doi to work with check whether altmetrics has data for it.
       //If so, make our div visible and create a new Altmetrics service
       $timeout(function () {
-        $http.get(altmetric_endpoint + '/doi/' + vm.doi).then(function () {
+        $http.get(altmetric_endpoint + '/doi/' + this.doi).then(function () {
           try {
             //Get the altmetrics widget
             angularLoad.loadScript(altmetric_widget + Date.now()).then(function () {});
@@ -546,7 +552,9 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
               serviceName: "altmetrics",
               title: "brief.results.tabs.Altmetrics"
             };
-            vm.parentCtrl.services.splice(vm.parentCtrl.services.length, 0, altmetricsSection);
+            this.$onInit = function () {
+              this.parentCtrl.services.splice(this.parentCtrl.services.length, 0, altmetricsSection);
+            }
           } catch (e) {
             console.log('doi lookup: caught error in http get request');
             console.log(e);
@@ -557,9 +565,9 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
         });
       }, 3000);
     } // pubmed lookup. copies above code, but replaces doi with pmid
-    else if (vm.pmid) {
+    else if (this.pmid) {
       $timeout(function () {
-        $http.get(altmetric_endpoint + '/pmid/' + vm.pmid).then(function () {
+        $http.get(altmetric_endpoint + '/pmid/' + this.pmid).then(function () {
           try {
             //Get the altmetrics widget
             angularLoad.loadScript(altmetric_widget + Date.now()).then(function () {});
@@ -569,7 +577,9 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
               serviceName: "altmetrics",
               title: "brief.results.tabs.Altmetrics"
             };
-            vm.parentCtrl.services.splice(vm.parentCtrl.services.length, 0, altmetricsSection);
+            this.$onInit = function () {
+              this.parentCtrl.services.splice(this.parentCtrl.services.length, 0, altmetricsSection);
+            }
           } catch (e) {
             console.log('pmid lookup: caught error in http get request');
             console.log(e);
@@ -583,13 +593,13 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
 
     //move the altmetrics widget into the new Altmetrics service section
     var unbindWatcher = this.$scope.$watch(function () {
-      return vm.parentElement.querySelector('h4[translate="brief.results.tabs.Altmetrics"]');
+      return this.parentElement.querySelector('h4[translate="brief.results.tabs.Altmetrics"]');
     }, function (newVal, oldVal) {
       if (newVal) {
         //Get the section body associated with the value we're watching
         let altContainer = newVal.parentElement.parentElement.parentElement.parentElement.children[1];
-        let altm1 = vm.parentElement.children[1].children[0];
-        let altm2 = vm.parentElement.children[1].children[1];
+        let altm1 = this.parentElement.children[1].children[0];
+        let altm2 = this.parentElement.children[1].children[1];
 
         if (altContainer && altContainer.appendChild && (altm1 || altm2)) {
             altContainer.appendChild(altm1);
@@ -602,7 +612,7 @@ app.controller('FullViewAfterController', ['angularLoad', '$http', '$scope', '$e
 
   //You'd also need to look at removing the various css/js scripts loaded by this.
   //refer to: https://github.com/Det-Kongelige-Bibliotek/primo-explore-rex
-  vm.$onDestroy = function ()
+  this.$onDestroy = function ()
   {
     if (this.$window._altmetric) {
         delete this.$window._altmetric;
@@ -644,195 +654,92 @@ app.component('prmFullViewAfter', {
     hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
     e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
  */
-app.controller('AccountLinksAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('AccountLinksAfterController', [function() {}]);
 
 app.component('prmAccountLinksAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'AccountLinksAfterController',
   template: '\n    <prm-account-links-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-account-links-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('FacetAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('FacetAfterController', [function() {}]);
 
 app.component('prmFacetAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'FacetAfterController',
   template: '\n    <prm-facet-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-facet-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('FacetExactAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('FacetExactAfterController', [function() {}]);
 
 app.component('prmFacetExactAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'FacetExactAfterController',
   template: '\n    <prm-facet-exact-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-facet-exact-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('LoansOverviewAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('LoansOverviewAfterController', [function() {}]);
 
 app.component('prmLoansOverviewAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'LoansOverviewAfterController',
   template: '\n    <prm-loans-overview-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-loans-overview-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('LogoAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('LogoAfterController', [function() {}]);
 
 app.component('prmLogoAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'LogoAfterController',
   template: '\n    <prm-logo-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-logo-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('MessagesAndBlocksOverviewAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('MessagesAndBlocksOverviewAfterController', [function() {}]);
 
 app.component('prmMessagesAndBlocksOverviewAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'MessagesAndBlocksOverviewAfterController',
   template: '\n    <prm-messages-and-blocks-overview-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-messages-and-blocks-overview-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('NoSearchResultAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('NoSearchResultAfterController', [function() {}]);
 
 app.component('prmNoSearchResultAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'NoSearchResultAfterController',
   template: '\n    <prm-no-search-result-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-no-search-result-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('PageNavMenuAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('PageNavMenuAfterController', [function() {}]);
 
 app.component('prmPageNavMenuAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'PageNavMenuAfterController',
   template: '\n    <prm-page-nav-menu-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-page-nav-menu-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('SearchBarAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('SearchBarAfterController', [function() {}]);
 
 app.component('prmSearchBarAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'SearchBarAfterController',
   template: '\n    <prm-search-bar-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-search-bar-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('SearchResultAvailabilityLineAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('SearchResultAvailabilityLineAfterController', [function() {}]);
 
 app.component('prmSearchResultAvailabilityLineAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'SearchResultAvailabilityLineAfterController',
   template: '\n    <prm-search-result-availability-line-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-search-result-availability-line-after-app-store-generated>\n'
-
 });
 
-//Auto generated code by primo app store DO NOT DELETE!!! -END-
-
-//Auto generated code by primo app store DO NOT DELETE!!! -START-
-/*
-    hookName is a place holder with should hold the hook name not including "prm" at the beginning and in upper camel case
-    e.g: for hook prmSearchBarAfter (in html prm-search-bar-after) it should be given "SearchBarAfter"
- */
-app.controller('TopbarAfterController', [function () {
-  var vm = this;
-}]);
+app.controller('TopbarAfterController', [function() {}]);
 
 app.component('prmTopbarAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'TopbarAfterController',
   template: '\n <div id="TopbarAfterSiteTitle"><a href="https://galter.northwestern.edu">Galter Health Sciences Library & Learning Center</a></div>\n<prm-topbar-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-topbar-after-app-store-generated>\n'
-
 });
 
 //Auto generated code by primo app store DO NOT DELETE!!! -END-

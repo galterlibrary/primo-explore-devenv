@@ -9,7 +9,7 @@ let gulp = require('gulp');
 let cssnano = require('gulp-cssnano');
 let debug = require('gulp-debug');
 let rename = require("gulp-rename");
-let sass = require('gulp-sass');
+let sass = require('gulp-sass')(require('sass'));
 let sourcemaps = require('gulp-sourcemaps');
 let plumber = require('gulp-plumber');
 let splitCss = require('../cssSplitter');
@@ -75,7 +75,7 @@ gulp.task('compile-scss',() => {
         }))
         // .pipe(sourcemaps.init())
         .pipe(sass())
-        .pipe(autoprefixer({    
+        .pipe(autoprefixer({
             cascade: false
         }));
     let colorStream = allCss
