@@ -1789,3 +1789,14 @@ md-card.default-card md-card-title#get-help-title {
 prm-atoz-search-bar {
   padding-top: 5rem;
 }
+
+/* LibChat styles */
+#libchat_button {
+  position: fixed;
+  right: 2rem;
+  bottom: 1rem;
+}
+
+#libchat_button a:hover{
+  box-shadow: none;
+}

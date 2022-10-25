@@ -100,12 +100,6 @@ app.component('prmAccountLinksAfterAppStoreGenerated', {
 
 // End add link to My Account
 
-
-
-
-
-
-
 // External Search
 
 angular.module('externalSearch', []).value('searchTargets', [{
@@ -639,15 +633,23 @@ app.component('prmFullViewAfter', {
 
 // End Altmetric plugin
 
-// Add the chat button
-//
-// (function () {
-//   var lc = document.createElement('script');lc.type = 'text/javascript';lc.async = 'true';
-//   lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'northwestern.libanswers.com/load_chat.php?hash=8479f851eb63bff929998c6128b41b20';
-//   var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(lc, s);
-//
-//   // End the chat button
-// })();
+// LibChat button
+app.component('libChatComponent', {
+  template: `<div id="libchat_button">
+               <div id="libchat_4e6bc50e0cea1aa526c386eb796636d7"></div>
+             </div>`
+});
+
+app.component('prmExploreFooterAfter', {
+  bindings: { parentCtrl: `<` },
+  template: `<lib-chat-component></lib-chat-component>`
+});
+
+(function () {
+  var lc = document.createElement('script');lc.type = 'text/javascript';lc.async = 'true';
+  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'galter-northwestern.libanswers.com/load_chat.php?hash=4e6bc50e0cea1aa526c386eb796636d7';
+  var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(lc, s);
+})();
 
 //Auto generated code by primo app store DO NOT DELETE!!! -START-
 /*
