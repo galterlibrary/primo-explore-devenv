@@ -1,3 +1,4 @@
+var config = require('./config');
 import 'primo-explore-lod-author-card';
 
 (function(){
@@ -635,8 +636,13 @@ app.component('prmFullViewAfter', {
 
 // LibChat button
 app.component('libChatComponent', {
+  controller: [function() {
+    this.$onInit = function(){
+      this.libchatId = config.LIBCHAT_ID;
+    };
+  }],
   template: `<div id="libchat_button">
-               <div id="libchat_4e6bc50e0cea1aa526c386eb796636d7"></div>
+               <div id="libchat_{{$ctrl.libchatId}}"></div>
              </div>`
 });
 
@@ -647,7 +653,7 @@ app.component('prmExploreFooterAfter', {
 
 (function () {
   var lc = document.createElement('script');lc.type = 'text/javascript';lc.async = 'true';
-  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'galter-northwestern.libanswers.com/load_chat.php?hash=4e6bc50e0cea1aa526c386eb796636d7';
+  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'galter-northwestern.libanswers.com/load_chat.php?hash=' + config.LIBCHAT_ID;
   var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(lc, s);
 })();
 
