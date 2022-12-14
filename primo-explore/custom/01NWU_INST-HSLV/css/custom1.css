@@ -1802,3 +1802,8 @@ prm-atoz-search-bar {
 #libchat_button a:hover{
   box-shadow: none;
 }
+
+/* Set the facets font to normal */
+.facet-title-row .text-number-space {
+  font-weight: normal;
+}
