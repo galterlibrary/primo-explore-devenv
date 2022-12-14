@@ -1740,14 +1740,16 @@ md-list.prm-list.prm-linkable-list-items .md-button.arrow-link-button md-list-it
 
 /* primary color hook end*/
 
-#TopbarAfterSiteTitle {
-  padding-left: 12.75px;
-  z-index: 1;
-  position: relative;
+prm-top-bar-below {
+  background-color: #51468A;
+}
+
+#TopbarBelowSiteTitle {
+  padding: 1em;
   border-top: 1px solid #7571b0;
 }
 
-#TopbarAfterSiteTitle > a {
+#TopbarBelowSiteTitle > a {
   margin-left: 0%;
   font-size: 40px;
   font-weight: 400;
@@ -1756,14 +1758,14 @@ md-list.prm-list.prm-linkable-list-items .md-button.arrow-link-button md-list-it
   font-family: "Open Sans","Helvetica Neue Light","Source Sans Pro","Helvetica Neue",Helvetica,Arial,Calibri,sans-serif;
 }
 
-#TopbarAfterSiteTitle > a:hover {
+#TopbarBelowSiteTitle > a:hover {
   background-color: transparent;
   box-shadow: none;
   opacity: .7;
 }
 
 prm-search-bar {
-  padding-top: 4em;
+  padding-top: 0;
 }
 
 prm-primary-bg.prm-hue1, prm-search-bar.prm-hue1, prm-spinner.prm-hue1.overlay-cover.light-on-dark:after, prm-topbar .top-nav-bar {
@@ -1787,7 +1789,7 @@ md-card.default-card md-card-title#get-help-title {
 }
 
 prm-atoz-search-bar {
-  padding-top: 5rem;
+  padding-top: 0rem;
 }
 
 /* LibChat styles */
