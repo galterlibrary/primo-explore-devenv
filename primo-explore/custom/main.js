@@ -7,9 +7,6 @@ import 'primo-explore-lod-author-card';
 
 var app = angular.module('viewCustom', ['angularLoad', 'externalSearch', 'hathiTrustAvailability', 'myILL', 'lodAuthorCard']);
 
-"use strict";
-'use strict';
-
 /************************************* BEGIN Customization Variables ************************************/
 
 //Here you can enter options to be passed to customization packages to configure them.
@@ -29,17 +26,16 @@ app.constant('illiadOptions', {
 
 // Add top alert
 
-app.component('prmTopbarAfterAppStoreGenerated', {
+app.component('prmTopBarBefore', {
   template: /*html*/'\n    <primo-explore-top-alert>      <md-toolbar>        <div class="bar alert-bar" layout="row" layout-align="left center">          <span class="bar-text"><prm-icon error-attention="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="error-attention"></prm-icon>           Coronavirus information for              <a href="https://www.feinberg.northwestern.edu/sites/covid-19/" target="_blank" class="primo-explore-top-alert-link"><strong>Feinberg. </strong></a>\n            </span>\n        </div>\n      </md-toolbar>\n    </primo-explore-top-alert>',
   controller: ['$element', function($element) {
     this.$onInit = function(){
       this.$postLink = function () {
-        var $primoExploreMain = $element.parent().parent().parent();
+        var $primoExploreMain = $element.parent().parent();
         var $el = $element.query('primo-explore-top-alert').detach();
         $primoExploreMain.prepend($el);
       };
     };
-
   }]
 });
 
@@ -47,7 +43,7 @@ app.component('prmTopbarAfterAppStoreGenerated', {
 
 app.controller('prmNoSearchResultAfterAppStoreGeneratedControllerAppStoreGenerated', [function () {
   this.$onInit = function(){
-   this.getSearchTerm = getSearchTerm;
+    this.getSearchTerm = getSearchTerm;
     function getSearchTerm() {
       this.$onInit = function () {
         return this.parentCtrl.term;
@@ -75,9 +71,7 @@ app.controller('prmLogoAfterAppStoreGeneratedControllerAppStoreGenerated', [func
 }]);
 
 app.component('prmLogoAfterAppStoreGenerated', {
-  bindings: {
-    parentCtrl: '<'
-  },
+  bindings: { parentCtrl: '<' },
   controller: 'prmLogoAfterAppStoreGeneratedControllerAppStoreGenerated',
   template: ' \n    <div class="product-logo product-logo-local" layout="row" layout-align="start center" layout-fill id="banner" tabindex="0" role="banner"><a href="https://www.feinberg.northwestern.edu/"><img ng-src="{{$ctrl.getIconLink()}}" alt="{{(\'nui.header.LogoAlt\' | translate)}}"/></a>\n    </div>\n  '
 });
@@ -448,6 +442,7 @@ angular.module('myILL', []).component('prmLoansOverviewAfterAppStoreGenerated', 
         //$scope.showGlobe = true;
         $scope.boxTitle = illiadOptions.boxTitle;
         $scope.illiadURL = illiadOptions.illiadURL;
+        console.log("boxTitle");
         console.log($scope.boxTitle);
         var url = illiadOptions.remoteScript;
         var response = illService.getILLiadData(url, user).then(function (response) {
@@ -742,12 +737,20 @@ app.component('prmSearchResultAvailabilityLineAfter', {
   template: '\n    <prm-search-result-availability-line-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-search-result-availability-line-after-app-store-generated>\n'
 });
 
-app.controller('TopbarAfterController', [function() {}]);
+app.controller('TopbarAfterController', ['$element', function($element) {
+  this.$onInit = function(){
+    this.$postLink = function () {
+      var $prmTopBar = $element.parent();
+      var $belowEl = $element.query('prm-top-bar-below').detach();
+      $prmTopBar.after($belowEl);
+    };
+  };
+}]);
 
 app.component('prmTopbarAfter', {
   bindings: { parentCtrl: '<' },
   controller: 'TopbarAfterController',
-  template: '\n <div id="TopbarAfterSiteTitle"><a href="https://galter.northwestern.edu">Galter Health Sciences Library & Learning Center</a></div>\n<prm-topbar-after-app-store-generated parent-ctrl="$ctrl.parentCtrl"></prm-topbar-after-app-store-generated>\n'
+  template: '\n <prm-top-bar-below><div tabindex="-1" role="banner" class="layout-fill layout-column zero-padding" layout="column" layout-fill=""><div flex="" id="TopbarBelowSiteTitle"><a href="https://galter.northwestern.edu">Galter Health Sciences Library & Learning Center</a></div></div></prm-top-bar-below>\n'
 });
 
 //Auto generated code by primo app store DO NOT DELETE!!! -END-
