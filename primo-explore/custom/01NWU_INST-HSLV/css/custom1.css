@@ -1807,3 +1807,21 @@ prm-atoz-search-bar {
 .facet-title-row .text-number-space {
   font-weight: normal;
 }
+
+#qrCodeScanner md-icon svg[id^='qrCode_'] {
+  display:none;
+}
+
+prm-search-bookmark-filter button#qrCodeScanner {
+  background-image: url(../img/perma-link.svg);
+  background-size: 32px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+prm-search-bookmark-filter button#qrCodeScanner:hover {
+  background-image: url(../img/perma-link-hover.svg);
+  background-size: 32px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
