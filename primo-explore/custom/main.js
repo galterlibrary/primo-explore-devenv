@@ -249,11 +249,67 @@ app.controller('SearchBarAfterControllerAppStoreGenerated', ['angularLoad', func
 
 //End display scopes
 
-//Hathi Trust
+// Begin Third Iron - Primo Integration...
 
+window.browzine = {
+
+  libraryId: "72",
+  apiKey: "a8ec00f3-12fc-4c43-866e-b677d65a11a9",
+
+  journalCoverImagesEnabled: true,
+
+  journalBrowZineWebLinkTextEnabled: true,
+  journalBrowZineWebLinkText: "View Journal Contents",
+
+  articleBrowZineWebLinkTextEnabled: true,
+  articleBrowZineWebLinkText: "View Issue Contents",
+
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadLinkText: "Download PDF",
+
+  articleLinkEnabled: true,
+  articleLinkText: "Read Article",
+
+  printRecordsIntegrationEnabled: true,
+  showFormatChoice: true,
+  showLinkResolverLink: true,
+  enableLinkOptimizer: true,
+
+  articleRetractionWatchEnabled: true,
+  articleRetractionWatchText: "Retracted Article",
+
+  unpaywallEmailAddressKey: "library@northwestern.edu",
+  articlePDFDownloadViaUnpaywallEnabled: true,
+  articlePDFDownloadViaUnpaywallText: "Download PDF (via Unpaywall)",
+  articleLinkViaUnpaywallEnabled: true,
+  articleLinkViaUnpaywallText: "Read Article (via Unpaywall)",
+  articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
+  articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall)",
+  articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
+  articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+document.head.appendChild(browzine.script);
+
+app.controller('prmSearchResultAvailabilityLineAfterAppStoreGeneratedController', ['$scope', '$window', function($scope, $window) {
+  this.$onInit = function (){
+    this.$scope = $scope;
+    this.$window = $window;
+    this.$window.browzine.primo.searchResult(this.$scope);
+  };
+}]);
+// inject hathi and browzine inot search results availability
 app.component('prmSearchResultAvailabilityLineAfterAppStoreGenerated', {
-  template: '<hathi-trust-availability hide-online="true" entity-id="urn:mace:incommon:northwestern.edu"></hathi-trust-availability>'
+  bindings: { parentCtrl: '<' },
+  template: '<hathi-trust-availability ignore-copyright="true" hide-online="true"></hathi-trust-availability>',
+  controller: 'prmSearchResultAvailabilityLineAfterAppStoreGeneratedController'
 });
+
+// ... End Third Iron - Primo Integration
+
+//Hathi Trust
 
 angular.module('hathiTrustAvailability', []).constant('hathiTrustBaseUrl', 'https://catalog.hathitrust.org/api/volumes/brief/json/').config(['$sceDelegateProvider', 'hathiTrustBaseUrl', function ($sceDelegateProvider, hathiTrustBaseUrl) {
   var urlWhitelist = $sceDelegateProvider.resourceUrlWhitelist();
