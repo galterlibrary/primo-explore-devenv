@@ -24,21 +24,6 @@ app.constant('illiadOptions', {
 
 // End Customization Variables
 
-// Add top alert
-
-app.component('prmTopBarBefore', {
-  template: /*html*/'\n    <primo-explore-top-alert>      <md-toolbar>        <div class="bar alert-bar" layout="row" layout-align="left center">          <span class="bar-text"><prm-icon error-attention="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="error-attention"></prm-icon>           Coronavirus information for              <a href="https://www.feinberg.northwestern.edu/sites/covid-19/" target="_blank" class="primo-explore-top-alert-link"><strong>Feinberg. </strong></a>\n            </span>\n        </div>\n      </md-toolbar>\n    </primo-explore-top-alert>',
-  controller: ['$element', function($element) {
-    this.$onInit = function(){
-      this.$postLink = function () {
-        var $primoExploreMain = $element.parent().parent();
-        var $el = $element.query('primo-explore-top-alert').detach();
-        $primoExploreMain.prepend($el);
-      };
-    };
-  }]
-});
-
 // Enhance No Results tile
 
 app.controller('prmNoSearchResultAfterAppStoreGeneratedControllerAppStoreGenerated', [function () {
