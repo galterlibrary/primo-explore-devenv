@@ -239,14 +239,14 @@ app.controller('SearchBarAfterControllerAppStoreGenerated', ['angularLoad', func
 window.browzine = {
 
   libraryId: "72",
-  apiKey: "a8ec00f3-12fc-4c43-866e-b677d65a11a9",
+  apiKey: config.BROWZINE_KEY,
 
   journalCoverImagesEnabled: true,
 
-  journalBrowZineWebLinkTextEnabled: true,
+  journalBrowZineWebLinkTextEnabled: false,
   journalBrowZineWebLinkText: "View Journal Contents",
 
-  articleBrowZineWebLinkTextEnabled: true,
+  articleBrowZineWebLinkTextEnabled: false,
   articleBrowZineWebLinkText: "View Issue Contents",
 
   articlePDFDownloadLinkEnabled: true,
